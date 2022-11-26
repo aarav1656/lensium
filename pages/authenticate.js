@@ -56,7 +56,7 @@ export default function Home() {
   }
 
   return (
-    <div>
+    <div className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
       { /* if the user has not yet connected their wallet, show a connect button */ }
       {
         !address && <button onClick={connect}>Connect</button>
