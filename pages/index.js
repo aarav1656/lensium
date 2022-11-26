@@ -47,9 +47,9 @@ export default function Home() {
     }
   }
   async function connect() {
-    const account = await window.ethereum.send('eth_requestAccounts')
-    if (account.result.length) {
-      setAddress(account.result[0])
+    const accounts = await window.ethereum.send('eth_requestAccounts')
+    if (accounts.result.length) {
+      setAddress(accounts.result[0])
       const response = await client.query({
         query: getDefaultProfile,
         variables: { address: accounts[0] }
