@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.1",
+    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "@rainbow-me/rainbowkit": "^0.7.4",
+    "@superfluid-finance/ethereum-contracts": "^1.4.3",
+    "@superfluid-finance/sdk-core": "^0.5.8",
+    "dotenv": "^16.0.3",
     "ethers": "^5.7.2",
     "graphql": "^16.6.0",
     "ipfs-http-client": "^59.0.0",
@@ -23,6 +27,7 @@
     "wagmi": "^0.7.7"
   },
   "devDependencies": {
+    "@types/react": "18.0.25",
     "eslint": "8.26.0",
     "eslint-config-next": "13.0.0"
   }

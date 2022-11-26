@@ -1,0 +1,40 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\Asus\\Desktop\\solidityCodes\\EthIndia\\lensium\\contracts\\lensium.sol": {
+      "lastModificationDate": 1669290659870,
+      "contentHash": "72b3fb9d5fac1dd80df8e98173d60d7a",
+      "sourceName": "contracts/lensium.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "lensium"
+      ]
+    }
+  }
+}

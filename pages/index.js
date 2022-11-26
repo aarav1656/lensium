@@ -34,11 +34,12 @@ export default function Home() {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const accounts = await provider.listAccounts()
     if (accounts.length) {
-      setAddress(accounts[0])
-      const response = await client.query({
+       setAddress(accounts[0])
+       const response = await client.query({
         query: getDefaultProfile,
         variables: { address: accounts[0] }
       })
+      console.log(response);
       setProfileId(response.data.defaultProfile.id)
       setHandle(response.data.defaultProfile.handle)
     }
@@ -49,7 +50,7 @@ export default function Home() {
       setAddress(account.result[0])
       const response = await client.query({
         query: getDefaultProfile,
-        variables: { address: accounts[0] }
+        variables: { address: account[0] }
       })
       setProfileId(response.data.defaultProfile.id)
       setHandle(response.data.defaultProfile.handle)
