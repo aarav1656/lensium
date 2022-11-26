@@ -37,23 +37,22 @@ export default function Home() {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const accounts = await provider.listAccounts()
     if (accounts.length) {
-       setAddress(accounts[0])
-       const response = await client.query({
+      setAddress(accounts[0])
+      const response = await client.query({
         query: getDefaultProfile,
         variables: { address: accounts[0] }
       })
-      console.log(response);
       setProfileId(response.data.defaultProfile.id)
       setHandle(response.data.defaultProfile.handle)
     }
   }
   async function connect() {
-    const accounts = await window.ethereum.send('eth_requestAccounts')
-    if (accounts.result.length) {
-      setAddress(accounts.result[0])
+    const account = await window.ethereum.send('eth_requestAccounts')
+    if (account.result.length) {
+      setAddress(account.result[0])
       const response = await client.query({
         query: getDefaultProfile,
-        variables: { address: account[0] }
+        variables: { address: accounts[0] }
       })
       setProfileId(response.data.defaultProfile.id)
       setHandle(response.data.defaultProfile.handle)
