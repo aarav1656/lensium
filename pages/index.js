@@ -19,7 +19,7 @@ const ipfsClient = create({
   port: 5001,
   protocol: 'https',
   headers: {
-      authorization: auth,
+    authorization: auth,
   },
 })
 
@@ -45,20 +45,7 @@ export default function Home() {
       setProfileId(response.data.defaultProfile.id)
       setHandle(response.data.defaultProfile.handle)
     }
-  }
-  async function connect() {
-    const account = await window.ethereum.send('eth_requestAccounts')
-    if (account.result.length) {
-      setAddress(account.result[0])
-      const response = await client.query({
-        query: getDefaultProfile,
-        variables: { address: accounts[0] }
-      })
-      setProfileId(response.data.defaultProfile.id)
-      setHandle(response.data.defaultProfile.handle)
-    }
-  }
-  async function login() {
+  } async function login() {
     try {
       const challengeInfo = await client.query({
         query: challenge,
@@ -76,12 +63,24 @@ export default function Home() {
         }
       })
 
-      const { data: { authenticate: { accessToken }}} = authData
+      const { data: { authenticate: { accessToken } } } = authData
       localStorage.setItem('lens-auth-token', accessToken)
       setToken(accessToken)
       setSession(authData.data.authenticate)
     } catch (err) {
       console.log('Error signing in: ', err)
+    }
+  }
+  async function connect() {
+    const account = await window.ethereum.send('eth_requestAccounts')
+    if (account.result.length) {
+      setAddress(account.result[0])
+      const response = await client.query({
+        query: getDefaultProfile,
+        variables: { address: accounts[0] }
+      })
+      setProfileId(response.data.defaultProfile.id)
+      setHandle(response.data.defaultProfile.handle)
     }
   }
   async function createPost() {
@@ -140,7 +139,7 @@ export default function Home() {
       }
     })
     console.log('Metadata verification request: ', result)
-      
+
     const added = await ipfsClient.add(JSON.stringify(metaData))
     return added
   }
