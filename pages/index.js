@@ -6,6 +6,9 @@ import {
 } from '../api'
 import { create } from 'ipfs-http-client'
 import { v4 as uuid } from 'uuid'
+import Link from 'next/link'
+import { Navbar } from '../components/Navbar'
+
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
 const projectSecret = process.env.NEXT_PUBLIC_PROJECT_SECRET
@@ -144,8 +147,10 @@ export default function Home() {
   function onChange(e) {
     setPostData(e.target.value)
   }
+
   return (
-    <div>
+    <div className='text-xl text-center mt-6'>
+      <Navbar />
       {
         !address && <button onClick={connect}>Connect</button>
       }
