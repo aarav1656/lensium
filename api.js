@@ -126,6 +126,7 @@ query ValidatePublicationMetadata ($metadatav2: PublicationMetadataV2Input!) {
 }
 `
 
+
 /* helper functions */
 function getSigner() {
   if (typeof window !== "undefined") {
