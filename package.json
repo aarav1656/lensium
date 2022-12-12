@@ -9,8 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "@apollo/client": "^3.7.2",
+    "@metamask/detect-provider": "^2.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "@rainbow-me/rainbowkit": "^0.7.4",
     "@superfluid-finance/ethereum-contracts": "^1.4.3",
     "@superfluid-finance/sdk-core": "^0.5.8",

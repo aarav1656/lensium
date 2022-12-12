@@ -9,6 +9,10 @@ import {
 } from '../api'
 import { create } from 'ipfs-http-client'
 import { v4 as uuid } from 'uuid'
+import { useNetwork } from 'wagmi'
+import detectEthereumProvider from "@metamask/detect-provider";
+
+
 
 
 
@@ -36,9 +40,23 @@ export default function Navbar() {
   const [profileId, setProfileId] = useState('')
   const [handle, setHandle] = useState('')
   const [token, setToken] = useState('')
+  const [chainId, setchainId] = useState(0)
   useEffect(() => {
     checkConnection()
   }, [])
+  useEffect(() => {
+    findId()
+  }, [])
+  useEffect(() => {
+    if (window.ethereum) {
+      window.ethereum.on("chainChanged", () => {
+        window.location.reload();
+      });
+      window.ethereum.on("accountsChanged", () => {
+        window.location.reload();
+      });
+    }
+  });
   async function checkConnection() {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const accounts = await provider.listAccounts()
@@ -52,31 +70,61 @@ export default function Navbar() {
       setHandle(response.data.defaultProfile.handle)
     }
   }
-  const switchNetwork = async () => {
-    try {
-      if (!window.ethereum) throw new Error("No crypto wallet found");
-      await window.ethereum.request({
-        method: "wallet_addEthereumChain",
-        params: [
-          {
-            
-              chainId: `0x${Number(137).toString(16)}`,
-              chainName: "Polygon Mainnet",
-              nativeCurrency: {
-                name: "MATIC",
-                symbol: "MATIC",
-                decimals: 18
-              },
-              rpcUrls: ["https://polygon-rpc.com/"],
-              blockExplorerUrls: ["https://polygonscan.com/"]
-            
-          }
-        ]
-      });
-    } catch (err) {
-      console.log(err.message)
+
+  async function findId() {
+    const provider = await detectEthereumProvider();
+    if (provider) {
+      const chainId = await provider.request({ method: "eth_chainId" });
+      console.log(chainId);
+      setchainId(chainId);
+    } else {
+      console.log("No provider found...");
     }
-  };
+  }
+  findId()
+
+  const switchNetworkStack = async () => {
+    if (window.ethereum) {
+      try {
+        // Try to switch to the Mumbai testnet
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: `0x${Number(137).toString(16)}` }], // Check networks.js for hexadecimal network ids
+        });
+      } catch (error) {
+        // This error code means that the chain we want has not been added to MetaMask
+        // In this case we ask the user to add it to their MetaMask
+        if (error.code === 4902) {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [
+                {   
+                  chainId: '0x137',
+                  chainName: 'Polygon Mainnet',
+                  rpcUrls: ['https://polygon-rpc.com/'],
+                  nativeCurrency: {
+                      name: " Matic",
+                      symbol: "MATIC",
+                      decimals: 18
+                  },
+                  blockExplorerUrls: ["https://polygonscan.com/"]
+                },
+              ],
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        console.log(error);
+      }
+    } else {
+      // If window.ethereum is not found then MetaMask is not installed
+      alert('MetaMask is not installed. Please install it to use this app: https://metamask.io/download.html');
+    } 
+      }
+
+
   async function connect() {
     const account = await window.ethereum.send('eth_requestAccounts')
     if (account.result.length) {
@@ -214,10 +262,14 @@ export default function Navbar() {
 
 
           <div>
-          <div onClick={switchNetwork}>
+            {
+            chainId != 137 && (
+              <div onClick={switchNetworkStack}>
                 <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-3 mr-7 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">switch </button>
 
               </div>
+            )}
+
 
             {!address && (
               <div onClick={connect}>
